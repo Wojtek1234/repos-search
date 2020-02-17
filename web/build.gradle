@@ -1,20 +1,21 @@
-apply plugin: 'com.android.application'
-
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
+
+
     defaultConfig {
-        applicationId "pl.wojtek"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -27,12 +28,5 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation standards
-    implementation project(':search')
-    implementation project(':network')
-    implementation project(':web')
-    implementation project(':core')
-    implementation networking
-    implementation koin
-    implementation rxjavas
     implementation navigation
 }

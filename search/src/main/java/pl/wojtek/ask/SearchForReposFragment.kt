@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.poccofinance.core.rx.SchedulerUtils
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.search_for_repos_fragment.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.dsl.module
@@ -25,7 +26,7 @@ class SearchForReposFragment : Fragment() {
 
 
     private val viewModel: SearchForReposViewModel by viewModel()
-
+    private val onRepoClick:OnRepoClick by inject()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.search_for_repos_fragment, container, false)
@@ -35,7 +36,7 @@ class SearchForReposFragment : Fragment() {
     private lateinit var compositeDisposable: CompositeDisposable
     private val adapter by lazy {
         RepoAdapter {
-
+            onRepoClick.onRepoClick(it)
         }
     }
 
@@ -88,6 +89,6 @@ val searchFragmentModule = module {
 
     factory { ReposDataSource(getApi()) }
     factory { ReposDataMapper() }
-
+    single<OnRepoClick> {  OnRepoClickImp(get()) }
     viewModel { SearchForReposViewModel(get(), PaginModelImp(get<ReposDataSource>(), get<ReposDataMapper>()), get<SchedulerUtils>().subscribeScheduler) }
 }

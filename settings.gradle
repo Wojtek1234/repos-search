@@ -1,2 +1,2 @@
-include ':app', ':pagination', ':network', ':search', ':core'
+include ':app', ':pagination', ':network', ':search', ':core', ':web'
 rootProject.name='Github repo searcher'

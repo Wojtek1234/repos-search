@@ -8,6 +8,9 @@
         android:layout_margin="@dimen/simple_margin"
         android:elevation="5dp"
         android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?selectableItemBackground"
         >
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Ask</string>
+    <string name="search_for_repos">Search for repos...</string>
+</resources>

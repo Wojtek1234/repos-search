@@ -5,7 +5,7 @@ package pl.wojtek.pagination
  */
 
 
-interface DataHolder<Q,R>{
+internal interface DataHolder<Q,R>{
     fun provideData(q:Q,list:List<R>):List<R>
 }
 

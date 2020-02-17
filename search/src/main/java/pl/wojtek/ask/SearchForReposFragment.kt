@@ -19,7 +19,8 @@ import org.koin.dsl.module
 import pl.wojtek.ask.data.ReposDataMapper
 import pl.wojtek.ask.data.api.ReposDataSource
 import pl.wojtek.network.getApi
-import pl.wojtek.pagination.PaginModelImp
+import pl.wojtek.pagination.PaginModelFactory
+import pl.wojtek.pagination.paginationModule
 
 
 class SearchForReposFragment : Fragment() {
@@ -90,5 +91,5 @@ val searchFragmentModule = module {
     factory { ReposDataSource(getApi()) }
     factory { ReposDataMapper() }
     single<OnRepoClick> {  OnRepoClickImp(get()) }
-    viewModel { SearchForReposViewModel(get(), PaginModelImp(get<ReposDataSource>(), get<ReposDataMapper>()), get<SchedulerUtils>().subscribeScheduler) }
-}
+    viewModel { SearchForReposViewModel(get(),get<PaginModelFactory>().createPaginModel(get<ReposDataSource>(), get<ReposDataMapper>()), get<SchedulerUtils>().subscribeScheduler) }
+}.plus(paginationModule)

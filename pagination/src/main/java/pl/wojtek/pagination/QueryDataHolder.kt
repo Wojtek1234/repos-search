@@ -7,7 +7,7 @@ package pl.wojtek.pagination
 data class QueryParams<Q>(val query: Q?, val page: Int = 0, val pageSize: Int = 20)
 
 
-interface QueryDataHolder<Q> {
+internal interface QueryDataHolder<Q> {
     fun setQuery(q: Q)
     fun setMax(q: Q, max: Int)
     fun canAskForAnotherOne(): Boolean

@@ -22,8 +22,7 @@ class Application: Application(){
         startKoin{
             androidLogger()
             androidContext(this@Application)
-            modules(listOf(coreModule,
-                searchFragmentModule, networkModule))
+            modules(listOf(coreModule, networkModule)+ searchFragmentModule)
         }
     }
 }

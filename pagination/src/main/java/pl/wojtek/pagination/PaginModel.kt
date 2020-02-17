@@ -8,12 +8,21 @@ import io.reactivex.processors.BehaviorProcessor
 /**
  *
  */
+interface PaginModelFactory{
+    fun <Q, A, R> createPaginModel(dataSource: DataSource<Q,A>, dataMapper:DataMapper<A,R,Q>):PaginModel<Q,R,A>
+}
 
+internal class PaginModelFactoryImp:PaginModelFactory{
+    override fun <Q, A, R> createPaginModel(dataSource: DataSource<Q, A>, dataMapper: DataMapper<A, R, Q>): PaginModel<Q, R, A> {
+        return PaginModelImp(dataSource,dataMapper)
+    }
+}
 
 interface PaginModel<Q, R, A> {
     fun setQuery(q: Q)
     fun askForMore(): Maybe<List<R>>
     fun loadingState(): Flowable<Boolean>
+    fun clear()
 }
 
 
@@ -27,7 +36,7 @@ interface DataMapper<A, R, Q> {
 }
 
 
-class PaginModelImp<Q, R, A>(private val dataSource: DataSource<Q, A>,
+internal class PaginModelImp<Q, R, A>(private val dataSource: DataSource<Q, A>,
                                       private val mapper: DataMapper<A, R, Q>,
                                       private val dataHolder: DataHolder<Q, R> = DataHolderImp(),
                                       private val queryDataHolder: QueryDataHolder<Q> = QueryDataHolderImp()) : PaginModel<Q, R, A> {
@@ -56,4 +65,7 @@ class PaginModelImp<Q, R, A>(private val dataSource: DataSource<Q, A>,
     }
 
     override fun loadingState(): Flowable<Boolean> = loadingSubject
+    override fun clear() {
+        loadingSubject.onComplete()
+    }
 }

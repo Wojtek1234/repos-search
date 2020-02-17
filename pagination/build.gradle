@@ -35,7 +35,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation kotlin_std
     implementation rx_kotlin
-
+    implementation koin
     testImplementation unit_tests
 
 }

@@ -36,6 +36,8 @@ dependencies {
     implementation kotlin_std
     implementation rx_kotlin
     implementation koin
+    implementation coroutines
     testImplementation unit_tests
+    testImplementation corouines_test
 
 }

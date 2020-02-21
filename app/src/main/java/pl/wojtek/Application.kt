@@ -7,6 +7,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import pl.wojtek.ask.searchFragmentModule
 import pl.wojtek.network.networkModule
+import pl.wojtek.searchwithcoroutines.searchFragmentCoroutineModule
 
 /**
  *
@@ -22,7 +23,7 @@ class Application: Application(){
         startKoin{
             androidLogger()
             androidContext(this@Application)
-            modules(listOf(coreModule, networkModule)+ searchFragmentModule)
+            modules(listOf(coreModule, networkModule)+ searchFragmentModule+searchFragmentCoroutineModule)
         }
     }
 }

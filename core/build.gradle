@@ -31,4 +31,5 @@ dependencies {
     implementation rx_kotlin
     implementation rx_android
     implementation koin
+    implementation coroutines
 }

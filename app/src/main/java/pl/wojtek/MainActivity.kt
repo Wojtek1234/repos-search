@@ -5,13 +5,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import pl.wojtek.ask.OnRepoClick
+import pl.wojtek.searchwithcoroutines.OnRepoClickFromCoroutine
 
 class MainActivity : AppCompatActivity() {
 
 
     val onRepoClick:OnRepoClick by inject()
+    val onRepoClickCoroutine: OnRepoClickFromCoroutine by inject()
     private  var disposable: Disposable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +28,11 @@ class MainActivity : AppCompatActivity() {
             navHostFragment.findNavController().navigate(R.id.action_searchForReposFragment_to_webViewFragment,Bundle().apply { putString(getString(R.string.url_key),it.urlToRepo)},null)
         }
 
+        GlobalScope.launch(Dispatchers.Main) {
+            onRepoClickCoroutine.reposStream().collect {
+                navHostFragment.findNavController().navigate(R.id.action_searchForReposFragmentCor_to_webViewFragment,Bundle().apply { putString(getString(R.string.url_key),it.urlToRepo)},null)
+            }
+        }
     }
 
     override fun onDestroy() {

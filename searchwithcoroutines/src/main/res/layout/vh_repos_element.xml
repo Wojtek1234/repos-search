@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/simple_margin"
+        android:elevation="5dp"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?selectableItemBackground"
+        >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/half_simple_margin"
+            >
+
+        <TextView
+                android:id="@+id/vhRepoTitleText"
+                style="@style/Text.SmallTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Tetris z kurczaka"
+                />
+
+        <TextView
+                android:id="@+id/vhRepoOwnerName"
+                style="@style/Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vhRepoTitleText"
+                tools:text="Owner placeholder"
+                />
+
+        <TextView
+                android:id="@+id/vhRepoStartText"
+                style="@style/Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/simple_margin"
+                android:drawableStart="@android:drawable/star_on"
+
+                android:text="217.12"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vhRepoOwnerName"
+                />
+
+        <TextView
+                android:id="@+id/vhRepoUrlText"
+                style="@style/Text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/simple_margin"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toBottomOf="@+id/vhRepoTitleText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/vhRepoTitleText"
+                app:layout_constraintTop_toTopOf="@id/vhRepoTitleText"
+                tools:text="http://github/tralala/to_jest_jakis_dlugi_adres_repo"
+                />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

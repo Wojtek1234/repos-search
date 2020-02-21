@@ -137,7 +137,7 @@ class SearchForReposViewModelTest:StringSpec(){
 
         "test that ask for more from model is passed from viewModel"{
             //given
-            val returnedList = listOf(Repository("repoName","url",123.0,"owner"))
+            val returnedList = listOf(Repository("repoName","url",123,"owner"))
 
             whenever(paginModel.askForMore()).thenReturn(Maybe.just(returnedList))
 
@@ -171,8 +171,8 @@ class SearchForReposViewModelTest:StringSpec(){
 
         "test that when query changes dispose previous model call and it does not returns"{
             //given
-            val returnedList = listOf(Repository("repoName","url",123.0,"owner"))
-            val listNotToBeReturned = listOf(Repository("dsadassda","url",11111.0,"ownerdasd"))
+            val returnedList = listOf(Repository("repoName","url",123,"owner"))
+            val listNotToBeReturned = listOf(Repository("dsadassda","url",11111,"ownerdasd"))
 
             whenever(paginModel.askForMore())
                 .thenReturn(Maybe.just(listNotToBeReturned))

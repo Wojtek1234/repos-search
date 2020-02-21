@@ -28,6 +28,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation standards
     implementation project(':search')
+    implementation project(':searchwithcoroutines')
     implementation project(':network')
     implementation project(':web')
     implementation project(':core')
@@ -35,4 +36,5 @@ dependencies {
     implementation koin
     implementation rxjavas
     implementation navigation
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

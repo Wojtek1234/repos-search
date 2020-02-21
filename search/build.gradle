@@ -30,6 +30,7 @@ dependencies {
     implementation project(':pagination')
     implementation project(':core')
     implementation project(':network')
+    implementation project(':styling')
     implementation standards
     implementation constrain
     implementation card_view

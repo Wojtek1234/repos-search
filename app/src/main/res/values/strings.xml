@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Github repo searcher</string>
+    <string name="rx_kotlin">Find with RX</string>
+    <string name="find_with_coroutine">Find with coroutine</string>
 </resources>

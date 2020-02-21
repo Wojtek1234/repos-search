@@ -40,8 +40,11 @@ buildscript {
 
         //mvvm
         lifecycle = '2.2.0'
+        def livedata_version = '2.2.0-rc02'
         def view_model = "androidx.lifecycle:lifecycle-viewmodel:$lifecycle"
         def view_model_ext = "androidx.lifecycle:lifecycle-extensions:$lifecycle"
+        def view_model_live_data = "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
+        def view_model_ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
 
         //navigation
         nav_version = "2.2.0"
@@ -83,7 +86,7 @@ buildscript {
         ]
 
         mvvms = [
-                view_model, view_model_ext
+                view_model, view_model_ext,view_model_live_data,view_model_ktx
         ]
 
         koins = [
@@ -105,7 +108,7 @@ buildscript {
         ]
 
         coroutines = [
-                coroutines_core,coroutines_android
+                coroutines_core, coroutines_android
         ]
     }
     repositories {

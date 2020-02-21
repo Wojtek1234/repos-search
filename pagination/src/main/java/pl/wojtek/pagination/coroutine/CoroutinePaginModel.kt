@@ -10,9 +10,17 @@ import pl.wojtek.pagination.*
  *
 
  */
+interface CoroutinePaginModelFactory{
+    fun <Q, A, R> createPaginModel(dataSource: CoroutineDataSource<Q,A>, dataMapper:DataMapper<A,R,Q>):CoroutinePaginModel<Q,R,A>
+}
 
+internal class CoroutinePaginModelFactoryImp: CoroutinePaginModelFactory {
+    override fun <Q, A, R> createPaginModel(dataSource: CoroutineDataSource<Q, A>, dataMapper: DataMapper<A, R, Q>): CoroutinePaginModel<Q, R, A> {
+        return CoroutinPaginModelImp(dataSource,dataMapper)
+    }
+}
 interface CoroutinePaginModel<Q, R, A> {
-    fun setQuery(q: Q)
+   suspend fun setQuery(q: Q)
     suspend fun askForMore(): List<R>?
     fun loadingState(): Flow<Boolean>
     fun clear()
@@ -20,7 +28,7 @@ interface CoroutinePaginModel<Q, R, A> {
 
 
 interface CoroutineDataSource<Q, A> {
-    fun askForData(query: QueryParams<Q>): A
+   suspend fun askForData(query: QueryParams<Q>): A
 }
 
 
@@ -30,24 +38,33 @@ internal class CoroutinPaginModelImp<Q, R, A>(private val dataSource: CoroutineD
                                               private val dataHolder: DataHolder<Q, R> = DataHolderImp(),
                                               private val queryDataHolder: QueryDataHolder<Q> = QueryDataHolderImp()) : CoroutinePaginModel<Q, R, A> {
     private val loadingChannel: ConflatedBroadcastChannel<Boolean> = ConflatedBroadcastChannel(false)
-    override fun setQuery(q: Q) {
+    override suspend fun setQuery(q: Q) {
+        loadingChannel.send(false)
         queryDataHolder.setQuery(q)
     }
 
-    override suspend fun askForMore(): List<R>? = queryDataHolder.canAskForAnotherOne()
-        .takeIf { it && !loadingChannel.value }
-        ?.let {
-            loadingChannel.send(true)
-            queryDataHolder.provideQueryParams()
-        }
-        ?.let { dataSource.askForData(it) }
-        ?.let { mapper.map(it, queryDataHolder.provideQueryParams()) }
-        ?.let {
-            queryDataHolder.turnToNextPage()
+    override suspend fun askForMore(): List<R>? {
+      return  try {
+            queryDataHolder.canAskForAnotherOne()
+                .takeIf { it && !loadingChannel.value }
+                ?.let {
+                    loadingChannel.send(true)
+                    queryDataHolder.provideQueryParams()
+                }
+                ?.let { dataSource.askForData(it) }
+                ?.let { mapper.map(it, queryDataHolder.provideQueryParams()) }
+                ?.let {
+                    queryDataHolder.turnToNextPage()
+                    loadingChannel.send(false)
+                    queryDataHolder.setMax(it.query, it.max)
+                    dataHolder.provideData(it.query, it.list)
+                }
+        }catch (ex:Throwable){
             loadingChannel.send(false)
-            queryDataHolder.setMax(it.query, it.max)
-            dataHolder.provideData(it.query, it.list)
+            throw ex
         }
+    }
+
 
 
     override fun loadingState(): Flow<Boolean> = loadingChannel.asFlow()

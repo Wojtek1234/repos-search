@@ -147,5 +147,22 @@ internal class QueryDataHolderImpTest : StringSpec() {
             //then
             queryHolder.provideQueryParams() shouldBe QueryParams(query, 1, pageSize)
         }
+
+        "test when changing query max is cleared"{
+            //given
+            val timesToAsk = 3
+            val query = "szukam"
+            val query2 = "szukam2"
+            val max = pageSize * timesToAsk + 2
+
+            //when
+            queryHolder.setQuery(query)
+            queryHolder.setMax(query, max)
+            queryHolder.setQuery(query2)
+            (0 until timesToAsk + 1).forEach { _ -> queryHolder.turnToNextPage() }
+
+            //then
+            queryHolder.canAskForAnotherOne() shouldBe true
+        }
     }
 }

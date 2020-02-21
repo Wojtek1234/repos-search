@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/nav_graph.xml"
-        app:startDestination="@id/searchForReposFragment">
+        app:startDestination="@id/startFragment">
 
     <fragment
             android:id="@+id/searchForReposFragment"
-            android:name="pl.wojtek.ask.SearchForReposFragment"
+            android:name="pl.wojtek.searchwithcoroutines.SearchForReposFragment"
             android:label="SearchForReposFragment" >
         <action
                 android:id="@+id/action_searchForReposFragment_to_webViewFragment"
@@ -23,4 +24,31 @@
             android:id="@+id/webViewFragment"
             android:name="pl.wojtek.web.WebViewFragment"
             android:label="WebViewFragment" />
+    <fragment
+            android:id="@+id/searchForReposFragmentCor"
+            android:name="pl.wojtek.searchwithcoroutines.SearchForReposFragment"
+            android:label="SearchForReposFragment" >
+        <action
+                android:id="@+id/action_searchForReposFragmentCor_to_webViewFragment"
+                app:destination="@id/webViewFragment"
+                app:popUpTo="@id/searchForReposFragment"
+                app:launchSingleTop="true">
+            <argument
+                    android:name="@string/url_key"
+                    android:defaultValue="null"
+                    app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+            android:id="@+id/startFragment"
+            android:name="pl.wojtek.StartFragment"
+            android:label="fragment_start"
+            tools:layout="@layout/fragment_start" >
+        <action
+                android:id="@+id/action_startFragment_to_searchForReposFragment"
+                app:destination="@id/searchForReposFragment" />
+        <action
+                android:id="@+id/action_startFragment_to_searchForReposFragmentCor"
+                app:destination="@id/searchForReposFragmentCor" />
+    </fragment>
 </navigation>

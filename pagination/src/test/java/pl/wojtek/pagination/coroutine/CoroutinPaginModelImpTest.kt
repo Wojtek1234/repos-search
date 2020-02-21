@@ -4,6 +4,7 @@ import com.nhaarman.mockitokotlin2.*
 import io.kotlintest.TestCase
 import io.kotlintest.matchers.collections.shouldHaveSize
 import io.kotlintest.shouldBe
+import io.kotlintest.shouldThrow
 import io.kotlintest.specs.StringSpec
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -181,6 +182,75 @@ class CoroutinPaginModelImpTest : StringSpec() {
                 //when
                 paginModel.askForMore()
 
+                //then
+                values shouldHaveSize 3
+                values[1] shouldBe true
+                values[2] shouldBe false
+
+
+                job.cancel()
+            }
+        }
+
+        "test on api exception throw exception"{
+            runBlockingTest {
+                //given
+                val query = "tralala"
+                val dataFromSource = DataFromSource("data from hipotetical api")
+
+                val queryParams = QueryParams(query, 0, 20)
+                whenever(dataSource.askForData(queryParams)).thenThrow(java.lang.NullPointerException())
+
+                whenever(queryDataHolder.canAskForAnotherOne()).thenReturn(true)
+
+                whenever(queryDataHolder.provideQueryParams()).thenReturn(queryParams)
+
+                //when then
+                paginModel.setQuery(query)
+                shouldThrow<java.lang.NullPointerException> {
+                    paginModel.askForMore()
+                }
+
+
+                //then
+                with(inOrder(dataSource, mapper, dataHolder, queryDataHolder)) {
+                    verify(queryDataHolder).canAskForAnotherOne()
+                    verify(queryDataHolder).provideQueryParams()
+                    verify(dataSource).askForData(queryParams)
+                }
+            }
+        }
+
+        "test that after exception loading stream send false"{
+            runBlockingTest {
+
+                //given
+                val query = "tralala"
+
+
+                val queryParams = QueryParams(query, 0, 20)
+                whenever(dataSource.askForData(queryParams)).thenThrow(java.lang.NullPointerException())
+
+                whenever(queryDataHolder.canAskForAnotherOne()).thenReturn(true)
+
+                whenever(queryDataHolder.provideQueryParams()).thenReturn(queryParams)
+
+                val values = mutableListOf<Boolean>()
+
+                //when then
+                paginModel.setQuery(query)
+                val job = launch {
+                    paginModel.loadingState().collect {
+                        values.add(it)
+                    }
+                }
+                //then
+                values shouldHaveSize 1
+                values[0] shouldBe false
+                //when
+                shouldThrow<java.lang.NullPointerException> {
+                    paginModel.askForMore()
+                }
                 //then
                 values shouldHaveSize 3
                 values[1] shouldBe true

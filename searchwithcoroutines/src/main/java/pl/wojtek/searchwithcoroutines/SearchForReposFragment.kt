@@ -92,7 +92,6 @@ val searchFragmentCoroutineModule = module {
     single<OnRepoClickFromCoroutine> { OnRepoClickImp(get()) }
     viewModel {
         SearchForReposViewModel(
-            get(),
             get<CoroutinePaginModelFactory>().createPaginModel(get<ReposDataSource>(), get<ReposDataMapper>())
         )
     }

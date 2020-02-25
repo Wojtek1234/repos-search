@@ -64,10 +64,12 @@ buildscript {
 
 
         //unit tests
-        kotlin_test = '3.3.2'
+        kotlin_test_ver = '3.3.2'
         def mockito_kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
         def kotlin_junit = "org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}"
-        def kotlin_test = "io.kotlintest:kotlintest-runner-junit5:$kotlin_test"
+        def kotlin_test = "io.kotlintest:kotlintest-runner-junit5:$kotlin_test_ver"
+        def kotlin_test4 = "io.kotlintest:kotlintest-runner-junit4:$kotlin_test_ver"
+        atchitcture_component_test  = "androidx.arch.core:core-testing:2.1.0"
 
         //navigation
         ext.nav_version = "2.2.0"
@@ -102,6 +104,9 @@ buildscript {
 
         unit_tests = [
                 mockito_kotlin, kotlin_junit, kotlin_test
+        ]
+        unit_tests4 = [
+                mockito_kotlin, kotlin_junit, kotlin_test4
         ]
         navigations = [
                 navigation, ui_navigation

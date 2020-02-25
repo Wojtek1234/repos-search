@@ -46,6 +46,7 @@ dependencies {
     implementation gson
 
 
-    testImplementation unit_tests
+    testImplementation unit_tests4
     testImplementation corouines_test
+    testImplementation atchitcture_component_test
 }

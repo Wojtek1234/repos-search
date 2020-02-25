@@ -1,16 +1,12 @@
 package pl.wojtek.searchwithcoroutines
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import pl.wojtek.core.CoroutineUtils
 import pl.wojtek.pagination.coroutine.CoroutinePaginModel
 import pl.wojtek.searchwithcoroutines.data.Repository
 import pl.wojtek.searchwithcoroutines.network.SearchResult
@@ -28,8 +24,7 @@ interface SearchForReposVM {
 const val TIMEOUT_BEFORE_SEARCH = 300L
 
 @ExperimentalCoroutinesApi
-class SearchForReposViewModel(private val coroutineUtils: CoroutineUtils,
-                              private val paginModel: CoroutinePaginModel<String, Repository, SearchResult>,
+class SearchForReposViewModel(private val paginModel: CoroutinePaginModel<String, Repository, SearchResult>,
                               private val timeout: Long = TIMEOUT_BEFORE_SEARCH) : SearchForReposVM, ViewModel() {
 
     private val loadingProcessor: MutableLiveData<Boolean> = MutableLiveData()
@@ -87,7 +82,7 @@ class SearchForReposViewModel(private val coroutineUtils: CoroutineUtils,
         get() = errorStream
 
     override val loading: LiveData<Boolean>
-        get() = loadingProcessor
+        get() = loadingProcessor.distinctUntilChanged()
 
     override fun onCleared() {
         super.onCleared()

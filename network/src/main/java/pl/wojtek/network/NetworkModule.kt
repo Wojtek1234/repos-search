@@ -14,17 +14,13 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 private const val TIMEOUT = 30L
 val networkModule = module {
-
-
     single {
         OkHttpClient.Builder().apply {
             if (BuildConfig.DEBUG) {
-
                 val loggingInterceptor = HttpLoggingInterceptor()
                 loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
                 this.addInterceptor(loggingInterceptor)
             }
-
         }
             .build()
     }

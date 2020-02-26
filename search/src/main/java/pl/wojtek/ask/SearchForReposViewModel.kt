@@ -28,7 +28,7 @@ const val TIMEOUT_BEFORE_SEARCH = 300L
 
 class SearchForReposViewModel(private val schedulerUtils: SchedulerUtils,
                               private val paginModel: PaginModel<String, Repository, SearchResult>,
-                              private val debounceScheduler:Scheduler,
+                              private val debounceScheduler: Scheduler,
                               private val timeout: Long = TIMEOUT_BEFORE_SEARCH) : SearchForReposVM, ViewModel() {
 
     private val loadingProcessor: BehaviorProcessor<Boolean> = BehaviorProcessor.create()

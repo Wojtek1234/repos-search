@@ -71,7 +71,6 @@ class SearchForReposViewModel(private val paginModel: CoroutinePaginModel<String
             paginModel.askForMore()?.let {
                 listProcessor.postValue(it)
             }
-
         }
     }
 

@@ -7,13 +7,21 @@
 
     <fragment
             android:id="@+id/searchForReposFragment"
-            android:name="pl.wojtek.searchwithcoroutines.SearchForReposFragment"
+            android:name="pl.wojtek.ask.SearchForReposFragment"
             android:label="SearchForReposFragment" >
         <action
                 android:id="@+id/action_searchForReposFragment_to_webViewFragment"
                 app:destination="@id/webViewFragment"
                 app:popUpTo="@id/searchForReposFragment"
                 app:launchSingleTop="true">
+            <argument
+                    android:name="@string/url_key"
+                    android:defaultValue="null"
+                    app:argType="string" />
+        </action>
+        <action
+                android:id="@+id/action_searchForReposFragment_to_webViewFragment2"
+                app:destination="@id/webViewFragment">
             <argument
                     android:name="@string/url_key"
                     android:defaultValue="null"

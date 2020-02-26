@@ -15,22 +15,27 @@ import pl.wojtek.searchwithcoroutines.OnRepoClickFromCoroutine
 
 class MainActivity : AppCompatActivity() {
 
+    private val onRepoClick: OnRepoClick by inject()
+    private val onRepoClickCoroutine: OnRepoClickFromCoroutine by inject()
+    private var disposable: Disposable? = null
 
-    val onRepoClick:OnRepoClick by inject()
-    val onRepoClickCoroutine: OnRepoClickFromCoroutine by inject()
-    private  var disposable: Disposable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        disposable=onRepoClick.reposStream().subscribe {
-            navHostFragment.findNavController().navigate(R.id.action_searchForReposFragment_to_webViewFragment,Bundle().apply { putString(getString(R.string.url_key),it.urlToRepo)},null)
+        disposable = onRepoClick.reposStream().subscribe {
+            navHostFragment.findNavController()
+                .navigate(R.id.action_searchForReposFragment_to_webViewFragment2, Bundle().apply { putString(getString(R.string.url_key), it.urlToRepo) }, null)
         }
 
         GlobalScope.launch(Dispatchers.Main) {
             onRepoClickCoroutine.reposStream().collect {
-                navHostFragment.findNavController().navigate(R.id.action_searchForReposFragmentCor_to_webViewFragment,Bundle().apply { putString(getString(R.string.url_key),it.urlToRepo)},null)
+                navHostFragment.findNavController().navigate(
+                    R.id.action_searchForReposFragmentCor_to_webViewFragment,
+                    Bundle().apply { putString(getString(R.string.url_key), it.urlToRepo) },
+                    null
+                )
             }
         }
     }

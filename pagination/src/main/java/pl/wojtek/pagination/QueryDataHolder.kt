@@ -22,11 +22,10 @@ internal class QueryDataHolderImp<Q>(val pageSize: Int = 20) : QueryDataHolder<Q
     private var maximum: Pair<Q, Int>? = null
 
     override fun setQuery(q: Q) {
-        if (q != queryParams.query){
+        if (q != queryParams.query) {
             queryParams = QueryParams(q, 0, pageSize)
             maximum = null
         }
-
     }
 
     override fun setMax(q: Q, max: Int) {

@@ -9,8 +9,8 @@ import pl.wojtek.pagination.coroutine.CoroutinePaginModelFactoryImp
  */
 
 
-val paginationModule=module{
-    factory<PaginModelFactory>{PaginModelFactoryImp()}
+val paginationModule = module {
+    factory<PaginModelFactory> { PaginModelFactoryImp() }
 }
 val coroutinePaginationModule = module {
     factory<CoroutinePaginModelFactory> { CoroutinePaginModelFactoryImp() }

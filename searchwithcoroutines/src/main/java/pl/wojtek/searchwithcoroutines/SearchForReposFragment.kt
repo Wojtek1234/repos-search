@@ -34,7 +34,6 @@ class SearchForReposFragment : Fragment() {
         return inflater.inflate(R.layout.search_for_repos_fragment, container, false)
     }
 
-
     private val adapter by lazy {
         RepoAdapter {
             onRepoClickFromCoroutine.onRepoClick(it)
@@ -68,10 +67,9 @@ class SearchForReposFragment : Fragment() {
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
         }
 
-
         repositoryRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState);
+                super.onScrollStateChanged(recyclerView, newState)
 
                 if (!recyclerView.canScrollVertically(1)) {
                     viewModel.loadMore()
@@ -79,9 +77,6 @@ class SearchForReposFragment : Fragment() {
             }
         })
     }
-
-
-
 }
 
 

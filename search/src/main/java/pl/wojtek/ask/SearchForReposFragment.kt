@@ -27,7 +27,7 @@ class SearchForReposFragment : Fragment() {
 
 
     private val viewModel: SearchForReposViewModel by viewModel()
-    private val onRepoClick:OnRepoClick by inject()
+    private val onRepoClick: OnRepoClick by inject()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.search_for_repos_fragment, container, false)
@@ -52,7 +52,7 @@ class SearchForReposFragment : Fragment() {
         })
 
         searchText.doOnTextChanged { text, _, _, _ ->
-            viewModel.query(text?.toString()?:"")
+            viewModel.query(text?.toString() ?: "")
         }
 
         refreshLayout.isEnabled = false
@@ -63,16 +63,16 @@ class SearchForReposFragment : Fragment() {
         )
         compositeDisposable.add(
             viewModel.errors().subscribe {
-                Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         )
 
-        repositoryRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        repositoryRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState);
+                super.onScrollStateChanged(recyclerView, newState)
 
                 if (!recyclerView.canScrollVertically(1)) {
-                  viewModel.loadMore()
+                    viewModel.loadMore()
                 }
             }
         })
@@ -90,6 +90,12 @@ val searchFragmentModule = module {
 
     factory { ReposDataSource(getApi()) }
     factory { ReposDataMapper() }
-    single<OnRepoClick> {  OnRepoClickImp(get()) }
-    viewModel { SearchForReposViewModel(get(),get<PaginModelFactory>().createPaginModel(get<ReposDataSource>(), get<ReposDataMapper>()), get<SchedulerUtils>().subscribeScheduler) }
+    single<OnRepoClick> { OnRepoClickImp(get()) }
+    viewModel {
+        SearchForReposViewModel(
+            get(),
+            get<PaginModelFactory>().createPaginModel(get<ReposDataSource>(), get<ReposDataMapper>()),
+            get<SchedulerUtils>().subscribeScheduler
+        )
+    }
 }.plus(paginationModule)

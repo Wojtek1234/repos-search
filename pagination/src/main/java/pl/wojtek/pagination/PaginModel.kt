@@ -8,13 +8,13 @@ import io.reactivex.processors.BehaviorProcessor
 /**
  *
  */
-interface PaginModelFactory{
-    fun <Q, A, R> createPaginModel(dataSource: DataSource<Q,A>, dataMapper:DataMapper<A,R,Q>):PaginModel<Q,R,A>
+interface PaginModelFactory {
+    fun <Q, A, R> createPaginModel(dataSource: DataSource<Q, A>, dataMapper: DataMapper<A, R, Q>): PaginModel<Q, R, A>
 }
 
-internal class PaginModelFactoryImp:PaginModelFactory{
+internal class PaginModelFactoryImp : PaginModelFactory {
     override fun <Q, A, R> createPaginModel(dataSource: DataSource<Q, A>, dataMapper: DataMapper<A, R, Q>): PaginModel<Q, R, A> {
-        return PaginModelImp(dataSource,dataMapper)
+        return PaginModelImp(dataSource, dataMapper)
     }
 }
 
@@ -32,7 +32,7 @@ interface DataSource<Q, A> {
 
 data class MappedData<Q, R>(val query: Q, val list: List<R>, val max: Int = 0)
 interface DataMapper<A, R, Q> {
-    fun map(a: A,q:QueryParams<Q>): MappedData<Q, R>
+    fun map(a: A, q: QueryParams<Q>): MappedData<Q, R>
 }
 
 
@@ -47,19 +47,19 @@ internal class PaginModelImp<Q, R, A>(private val dataSource: DataSource<Q, A>,
 
     override fun askForMore(): Maybe<List<R>> {
         return Single.fromCallable { queryDataHolder.canAskForAnotherOne() }
-            .filter { it && !(loadingSubject.value?:false) }
+            .filter { it && !(loadingSubject.value ?: false) }
             .map {
                 loadingSubject.onNext(true)
                 queryDataHolder.provideQueryParams()
             }
             .flatMap { dataSource.askForData(it) }
-            .map { mapper.map(it,queryDataHolder.provideQueryParams()) }
+            .map { mapper.map(it, queryDataHolder.provideQueryParams()) }
             .doOnSuccess { queryDataHolder.setMax(it.query, it.max) }
             .map { dataHolder.provideData(it.query, it.list) }
             .doOnSuccess {
                 queryDataHolder.turnToNextPage()
                 loadingSubject.onNext(false)
-            }.doOnDispose { loadingSubject.onNext(false)  }
+            }.doOnDispose { loadingSubject.onNext(false) }
             .doOnError { loadingSubject.onNext(false) }
 
     }

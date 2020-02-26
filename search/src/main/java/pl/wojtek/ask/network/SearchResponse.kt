@@ -1,4 +1,5 @@
 package pl.wojtek.ask.network
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -14,7 +15,7 @@ data class SearchResult(
     val totalCount: Int
 )
 
- data class Item(
+data class Item(
     @SerializedName("created_at")
     val createdAt: String,
     @SerializedName("default_branch")

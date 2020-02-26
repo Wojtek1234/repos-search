@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.fragment_web_view.*
  *
  */
 
-const val URL = "url_key"
 
 class WebViewFragment : Fragment() {
 
